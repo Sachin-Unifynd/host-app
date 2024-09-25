@@ -1,14 +1,29 @@
-document.addEventListener("DOMContentLoaded", function() {
-  // Find all best seller badges on the page
-  const bestSellerBadges = document.querySelectorAll('.best-seller-badge');
+document.addEventListener("DOMContentLoaded", async function() {
+  // Assume product ID is available on the page
+  const productId = '{{ product.id }}'; 
+
+  // Shopify Storefront API URL (to fetch metafields for the product)
+  const apiUrl = `/products/${productId}.json`;
+
+  // Fetch product data
+  const response = await fetch(apiUrl);
+  const productData = await response.json();
   
-  // Loop over each badge and apply any desired styling
-  bestSellerBadges.forEach(function(badge) {
-    console.log(badge); // Log the badge element to the console
-    badge.style.backgroundColor = 'gold';   // Example styling
-    badge.style.padding = '10px';
-    badge.style.borderRadius = '5px';
-    badge.style.fontWeight = 'bold';
-    badge.innerText = '🔥 Best Seller';     // Customize the badge text
-  });
+  // Check if the metafield for best seller is "true"
+  const bestSellerMetafield = productData.product.metafields.find(metafield => 
+    metafield.namespace === 'product_badges' && metafield.key === 'best_seller'
+  );
+
+  if (bestSellerMetafield && bestSellerMetafield.value === 'true') {
+    // Create a Best Seller badge
+    const bestSellerBadge = document.createElement('div');
+    bestSellerBadge.classList.add('best-seller-badge');
+    bestSellerBadge.innerHTML = '🔥 Best Seller';
+
+    // Add the badge to the product element on the page
+    const productElement = document.querySelector('.product');
+    if (productElement) {
+      productElement.appendChild(bestSellerBadge);
+    }
+  }
 });

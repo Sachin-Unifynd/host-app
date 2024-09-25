@@ -39,7 +39,7 @@ document.addEventListener("DOMContentLoaded", async function() {
         // Create a Best Seller badge
         const bestSellerBadge = document.createElement('div');
         bestSellerBadge.classList.add('best-seller-badge');
-        bestSellerBadge.innerHTML = '🔥 Best Seller';
+        bestSellerBadge.innerHTML = '<div>Best Seller</div>'; // Updated to include <div>Best Seller</div>
         console.log("Best Seller badge created:", bestSellerBadge);
 
         // Add the badge to the product element

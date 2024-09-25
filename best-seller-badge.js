@@ -4,6 +4,7 @@ document.addEventListener("DOMContentLoaded", function() {
   
   // Loop over each badge and apply any desired styling
   bestSellerBadges.forEach(function(badge) {
+    console.log(badge); // Log the badge element to the console
     badge.style.backgroundColor = 'gold';   // Example styling
     badge.style.padding = '10px';
     badge.style.borderRadius = '5px';

@@ -1,14 +1,14 @@
 document.addEventListener("DOMContentLoaded", async function() {
   console.log("DOM fully loaded and parsed.");
 
-  // Get all product elements on the page
-  const productElements = document.querySelectorAll('.product'); // Adjust the selector to match your HTML structure
+  // Get all product elements on the page by targeting data-product-id or data-product-handle
+  const productElements = document.querySelectorAll('[data-product-id], [data-product-handle]');
   console.log("Found product elements:", productElements);
 
   for (const productElement of productElements) {
-    // Assume each product element contains a data attribute with its product ID
-    const productId = productElement.dataset.productId; // Example: <div class="product" data-product-id="{{ product.id }}"> 
-    console.log("Product ID:", productId);
+    // Try to get the product ID from the data-product-id or fallback to data-product-handle if needed
+    const productId = productElement.dataset.productId || productElement.dataset.productHandle;
+    console.log("Product ID or Handle:", productId);
 
     // Shopify Storefront API URL to fetch metafields for each product
     const apiUrl = `/products/${productId}.json`;

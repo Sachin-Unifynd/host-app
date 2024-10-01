@@ -1,17 +1,27 @@
 document.addEventListener("DOMContentLoaded", async function() {
   console.log("DOM fully loaded and parsed.");
 
-  // Get all product elements on the page by targeting data-product-id or data-product-handle
-  const productElements = document.querySelectorAll('[data-product-id], [data-product-handle]');
-  console.log("Found product elements:", productElements);
+  // Retrieve the product card class name from local storage
+  const productCardClass = localStorage.getItem("productCardClass") || "";
+  if (!productCardClass) {
+    console.error("No product card class specified");
+    return;
+  }
+
+  // Get all product elements with the specified class
+  const productElements = document.querySelectorAll(`.${productCardClass}`);
+  console.log(`Found product elements with class "${productCardClass}":`, productElements);
 
   for (const productElement of productElements) {
-    // Try to get the product ID from the data-product-id or fallback to data-product-handle if needed
+    // Fetch the product ID or handle from data attributes
     const productId = productElement.dataset.productId || productElement.dataset.productHandle;
-    console.log("Product ID or Handle:", productId);
+    if (!productId) {
+      console.error("Product ID or Handle not found for this element:", productElement);
+      continue; // Skip to the next element
+    }
 
     // Shopify Storefront API URL to fetch metafields for each product
-    const apiUrl = `/products/${productId}.json`;
+    const apiUrl = `/products/${productId}.json`; // Adjust to your Storefront API endpoint
     console.log("API URL to fetch product data:", apiUrl);
 
     try {
@@ -39,7 +49,7 @@ document.addEventListener("DOMContentLoaded", async function() {
         // Create a Best Seller badge
         const bestSellerBadge = document.createElement('div');
         bestSellerBadge.classList.add('best-seller-badge');
-        bestSellerBadge.innerHTML = '<div>Best Seller</div>'; // Updated to include <div>Best Seller</div>
+        bestSellerBadge.innerHTML = '<div>Best Seller</div>';
         console.log("Best Seller badge created:", bestSellerBadge);
 
         // Add the badge to the product element

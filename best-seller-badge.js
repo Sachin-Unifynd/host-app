@@ -1,23 +1,6 @@
 document.addEventListener("DOMContentLoaded", async function() {
   console.log("DOM fully loaded and parsed.");
 
-  // Inject CSS for the Best Seller badge
-  const style = document.createElement('style');
-  style.innerHTML = `
-    .best-seller-badge {
-      background-color: lime; /* Badge color */
-      color: white; /* Text color */
-      font-weight: bold; /* Bold text */
-      padding: 5px 10px; /* Padding */
-      border-radius: 5px; /* Rounded corners */
-      position: absolute; /* Position it relative to the product element */
-      top: 10px; /* Adjust vertical position */
-      left: 10px; /* Adjust horizontal position */
-      z-index: 10; /* Ensure it appears above other elements */
-    }
-  `;
-  document.head.appendChild(style);
-
   // Retrieve the product card class name from local storage
   const productCardClass = localStorage.getItem("productCardClass") || "";
   console.log("Retrieved product card class from local storage:", productCardClass);
@@ -81,6 +64,16 @@ document.addEventListener("DOMContentLoaded", async function() {
         // Add the badge to the product element
         productElement.appendChild(bestSellerBadge);
         console.log("Best Seller badge successfully added to the product ID:", productId);
+
+        // Create another div to append to the targeted div
+        const targetedDiv = document.createElement('div');
+        targetedDiv.classList.add('targeted-div'); // Add your custom class
+        targetedDiv.innerHTML = '<p>This is a targeted div</p>'; // Add content to the div
+        console.log("Targeted div created:", targetedDiv);
+
+        // Append the targeted div to the product element (or adjust this to a specific parent)
+        productElement.appendChild(targetedDiv);
+        console.log("Targeted div successfully added to the product ID:", productId);
       } else {
         console.log("Best Seller metafield is false or not found for product ID:", productId);
       }

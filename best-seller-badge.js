@@ -3,6 +3,8 @@ document.addEventListener("DOMContentLoaded", async function() {
 
   // Retrieve the product card class name from local storage
   const productCardClass = localStorage.getItem("productCardClass") || "";
+  console.log("Retrieved product card class from local storage:", productCardClass);
+
   if (!productCardClass) {
     console.error("No product card class specified");
     return;
@@ -12,9 +14,16 @@ document.addEventListener("DOMContentLoaded", async function() {
   const productElements = document.querySelectorAll(`.${productCardClass}`);
   console.log(`Found product elements with class "${productCardClass}":`, productElements);
 
+  if (productElements.length === 0) {
+    console.warn(`No elements found with class "${productCardClass}".`);
+  }
+
   for (const productElement of productElements) {
     // Fetch the product ID or handle from data attributes
     const productId = productElement.dataset.productId || productElement.dataset.productHandle;
+    console.log("Processing product element:", productElement);
+    console.log("Extracted Product ID/Handle:", productId);
+
     if (!productId) {
       console.error("Product ID or Handle not found for this element:", productElement);
       continue; // Skip to the next element
@@ -34,7 +43,7 @@ document.addEventListener("DOMContentLoaded", async function() {
       }
 
       const productData = await response.json();
-      console.log("Product data fetched successfully:", productData);
+      console.log("Product data fetched successfully for product ID:", productId, productData);
 
       // Check if the metafield for best seller is "true"
       const bestSellerMetafield = productData.product.metafields.find(metafield => 

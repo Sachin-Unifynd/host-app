@@ -1,4 +1,5 @@
 document.addEventListener("DOMContentLoaded", async function() {
+  alert("Best Seller Badge Script Loaded!"); // Add alert to confirm the script has loaded
   console.log("DOM fully loaded and parsed.");
 
   // Retrieve the product card class name from local storage

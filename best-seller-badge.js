@@ -5,7 +5,7 @@
 
     // Check if the response is successful
     if (!response.ok) {
-      console.error('Failed to fetch best-selles products. Status:', response.status);
+      console.error('Failed to fetch best-seller products. Status:', response.status);
       return; // Exit the function if the request failed
     }
 

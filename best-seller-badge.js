@@ -1,7 +1,7 @@
 (async function() {
   try {
     // Fetch the list of best-seller products from your API endpoint
-    const response = await fetch('/api/best-sellers.ts');
+    const response = await fetch('/api/app.best-sellers.ts');
 
     // Check if the response is successful
     if (!response.ok) {

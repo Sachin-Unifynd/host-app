@@ -6,6 +6,7 @@
     // Check if the response is successful
     if (!response.ok) {
       console.error('Failed to fetch best-seller products. Status:', response.status);
+      alert('Failed to fetch best-seller products. Please check the console for details.'); // Alert on failure
       return; // Exit the function if the request failed
     }
 
@@ -14,10 +15,12 @@
     // Verify that the response is an array
     if (!Array.isArray(bestSellers)) {
       console.error('Unexpected response format. Expected an array of product IDs:', bestSellers);
+      alert('Unexpected response format. Expected an array of product IDs.'); // Alert on unexpected format
       return;
     }
 
     console.log('Fetched best-seller product IDs:', bestSellers);
+    alert('Successfully fetched best-seller products!'); // Alert on success
 
     // Iterate over the array of best-seller product IDs
     bestSellers.forEach(productId => {
@@ -34,13 +37,16 @@
         productElement.appendChild(badge);
 
         console.log('Added Best Seller badge to product ID:', productId);
+        alert(`Added Best Seller badge to product ID: ${productId}`); // Alert for each badge added
       } else {
         console.warn('Product element not found for product ID:', productId);
+        alert(`Product element not found for product ID: ${productId}`); // Alert if product not found
       }
     });
 
   } catch (error) {
     // Handle any other errors that occur during the fetch
     console.error('An error occurred while fetching best-seller products:', error);
+    alert('An error occurred while fetching best-seller products. Please check the console for details.'); // Alert for other errors
   }
 })();

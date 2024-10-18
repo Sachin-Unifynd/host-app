@@ -8,7 +8,7 @@ async function fetchWithRetry(url, options, retries = 3) {
   for (let i = 0; i < retries; i++) {
     const response = await fetch(url, options);
     if (response.status === 429) {
-      // If we get a 429 error, wait before retrying
+      // If we get a 429 error, we should wait before retrying
       const retryAfter = response.headers.get('Retry-After');
       console.warn(`Rate limited, retrying after ${retryAfter || 1} seconds...`);
       await delay((retryAfter || 1) * 1000); // Wait before retrying
@@ -23,29 +23,21 @@ async function fetchWithRetry(url, options, retries = 3) {
   throw new Error('Too many requests, please try again later.');
 }
 
-// Main function to fetch and display best-seller product IDs with metafield check
+// Main function to fetch and display best-seller product IDs with throttling
 (async function () {
   try {
     // Fetch the list of best-seller products from your API endpoint with retry logic
     const bestSellers = await fetchWithRetry('/api/best-sellers.ts');
 
     if (!bestSellers || !Array.isArray(bestSellers)) {
-      console.error('Unexpected response format. Expected an array of product objects:', bestSellers);
+      console.error('Unexpected response format. Expected an array of product IDs:', bestSellers);
       return;
     }
 
-    console.log('Fetched best-seller product data:', bestSellers);
+    console.log('Fetched best-seller product IDs:', bestSellers);
 
-    // Iterate over the array of best-seller products
-    for (const product of bestSellers) {
-      const { id: productId, isBestSeller } = product;
-
-      // Check if the product has a metafield value indicating it's a best-seller
-      if (!isBestSeller) {
-        console.log(`Product ID ${productId} is not marked as a best-seller.`);
-        continue; // Skip the product if it is not marked as a best-seller
-      }
-
+    // Iterate over the array of best-seller product IDs
+    for (const productId of bestSellers) {
       // Find the product elements on the page based on a unique selector
       const productElement = document.querySelector(`[data-product-id="${productId}"]`);
 

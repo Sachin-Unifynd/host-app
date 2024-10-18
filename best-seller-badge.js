@@ -22,7 +22,7 @@
     // Iterate over the array of best-seller product IDs
     bestSellers.forEach(productId => {
       // Find the product elements on the page based on a unique selector
-      const productElement = document.querySelector([data-product-id=="${productId}"]);
+      const productElement = document.querySelector([data-product-id="${productId}"]);
 
       if (productElement) {
         // Create the badge element

@@ -6,7 +6,7 @@
 
     let hasBestSeller = false;
 
-    // Iterate over each product element
+    // Iterate over each product element once
     productElements.forEach((productElement) => {
       // Check if the product has a "Best Seller" metafield value
       const metafieldValue = productElement.getAttribute('data-metafield-best-seller'); // Change to the actual attribute you use
@@ -28,12 +28,8 @@
       }
     });
 
-    // Alert to indicate the script has finished if at least one best seller was found
-    if (hasBestSeller) {
-      alert('Best seller badges have been added successfully.');
-    } else {
-      alert('No Best Seller badges were added.');
-    }
+    // Show the alert after the iteration is complete
+    alert(hasBestSeller ? 'Best seller badges have been added successfully.' : 'No Best Seller badges were added.');
 
   } catch (error) {
     // Handle any other errors that occur during the process

@@ -3,15 +3,16 @@ function delay(ms) {
   return new Promise((resolve) => setTimeout(resolve, ms));
 }
 
-// Function to fetch data with retry logic
-async function fetchWithRetry(url, options, retries = 2) {
+// Function to fetch data with retry logic and exponential backoff
+async function fetchWithRetry(url, options, retries = 3) {
   for (let i = 0; i < retries; i++) {
     const response = await fetch(url, options);
     if (response.status === 429) {
       // If we get a 429 error, we should wait before retrying
       const retryAfter = response.headers.get('Retry-After');
-      console.warn(`Rate limited, retrying after ${retryAfter || 1} seconds...`);
-      await delay((retryAfter || 1) * 1000); // Wait before retrying
+      const waitTime = retryAfter ? parseInt(retryAfter, 10) * 1000 : (2 ** i) * 1000; // Exponential backoff
+      console.warn(`Rate limited, retrying after ${waitTime / 1000} seconds...`);
+      await delay(waitTime);
     } else if (response.ok) {
       // If response is okay, return the data
       return response.json();
@@ -23,18 +24,32 @@ async function fetchWithRetry(url, options, retries = 2) {
   throw new Error('Too many requests, please try again later.');
 }
 
-// Main function to fetch and display best-seller product IDs with throttling
+// Main function to fetch and display best-seller product IDs with caching
 (async function () {
   try {
-    // Fetch the list of best-seller products from your API endpoint with retry logic
-    const bestSellers = await fetchWithRetry('/api/best-sellers.ts');
+    // Check local storage for cached data
+    const cacheKey = 'bestSellersCache';
+    const cacheDuration = 60 * 60 * 1000; // 1 hour
+    const cachedData = localStorage.getItem(cacheKey);
+    const cacheTimestamp = localStorage.getItem(`${cacheKey}-timestamp`);
 
-    // Print the fetched content to the console
-    console.log('API Content:', bestSellers);
+    let bestSellers;
+    if (cachedData && cacheTimestamp && (Date.now() - parseInt(cacheTimestamp, 10)) < cacheDuration) {
+      // Use cached data if it's still fresh
+      console.log('Using cached best-seller data');
+      bestSellers = JSON.parse(cachedData);
+    } else {
+      // Fetch the list of best-seller products from your API endpoint with retry logic
+      bestSellers = await fetchWithRetry('/api/best-sellers.ts');
 
-    if (!bestSellers || !Array.isArray(bestSellers)) {
-      console.error('Unexpected response format. Expected an array of product IDs:', bestSellers);
-      return;
+      if (!bestSellers || !Array.isArray(bestSellers)) {
+        console.error('Unexpected response format. Expected an array of product IDs:', bestSellers);
+        return;
+      }
+
+      // Cache the fetched data
+      localStorage.setItem(cacheKey, JSON.stringify(bestSellers));
+      localStorage.setItem(`${cacheKey}-timestamp`, Date.now().toString());
     }
 
     console.log('Fetched best-seller product IDs:', bestSellers);
@@ -45,15 +60,21 @@ async function fetchWithRetry(url, options, retries = 2) {
       const productElement = document.querySelector(`[data-product-id="${productId}"]`);
 
       if (productElement) {
-        // Create the badge element
-        const badge = document.createElement('div');
-        badge.className = 'best-seller-badge';
-        badge.innerText = 'Best Seller';
+        // Check if the product has a "Best Seller" metafield value
+        const isBestSeller = productElement.getAttribute('data-best-seller') === 'true';
 
-        // Add the badge to the product element
-        productElement.appendChild(badge);
+        if (isBestSeller) {
+          // Create the badge element
+          const badge = document.createElement('div');
+          badge.className = 'best-seller-badge';
+          badge.innerText = 'Best Seller';
 
-        console.log('Added Best Seller badge to product ID:', productId);
+          // Add the badge to the product element
+          productElement.appendChild(badge);
+          console.log('Added Best Seller badge to product ID:', productId);
+        } else {
+          console.log(`Product ID ${productId} is not marked as a Best Seller.`);
+        }
       } else {
         console.warn('Product element not found for product ID:', productId);
       }

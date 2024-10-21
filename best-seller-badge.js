@@ -4,7 +4,7 @@ function delay(ms) {
 }
 
 // Function to fetch data with retry logic
-async function fetchWithRetry(url, options, retries = 3) {
+async function fetchWithRetry(url, options, retries = 2) {
   for (let i = 0; i < retries; i++) {
     const response = await fetch(url, options);
     if (response.status === 429) {
@@ -28,6 +28,9 @@ async function fetchWithRetry(url, options, retries = 3) {
   try {
     // Fetch the list of best-seller products from your API endpoint with retry logic
     const bestSellers = await fetchWithRetry('/api/best-sellers.ts');
+
+    // Print the fetched content to the console
+    console.log('API Content:', bestSellers);
 
     if (!bestSellers || !Array.isArray(bestSellers)) {
       console.error('Unexpected response format. Expected an array of product IDs:', bestSellers);

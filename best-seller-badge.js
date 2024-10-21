@@ -28,12 +28,16 @@
       }
     });
 
-    // Show the alert after the iteration is complete
-    alert(hasBestSeller ? 'Best seller badges have been added successfully.' : 'No Best Seller badges were added.');
+    // Optionally, you can remove the alert if you don't want to show it
+    // alert(hasBestSeller ? 'Best seller badges have been added successfully.' : 'No Best Seller badges were added.');
+
+    // You can simply log the result instead of showing an alert
+    console.log(hasBestSeller ? 'Best seller badges have been added successfully.' : 'No Best Seller badges were added.');
 
   } catch (error) {
     // Handle any other errors that occur during the process
     console.error('An error occurred while adding best-seller badges:', error);
-    alert('Failed to display best-seller products.');
+    // Optionally, you can remove the alert here too
+    // alert('Failed to display best-seller products.');
   }
 })();

@@ -7,7 +7,7 @@ function delay(ms) {
 (async function () {
   try {
     // Select all product elements
-    const productElements = document.querySelectorAll('.product'); // Adjust the selector to target your product elements
+    const productElements = document.querySelectorAll('.card-wrapper'); // Adjust the selector to target your product elements
 
     // Iterate over each product element
     for (const productElement of productElements) {

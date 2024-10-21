@@ -63,8 +63,8 @@ async function fetchWithRetry(url, options, retries = 3) {
         // Check if the product has a "Best Seller" metafield value
         const isBestSeller = productElement.getAttribute('data-best-seller') === 'true';
 
+        // Create the badge element if the metafield value is true
         if (isBestSeller) {
-          // Create the badge element
           const badge = document.createElement('div');
           badge.className = 'best-seller-badge';
           badge.innerText = 'Best Seller';
@@ -72,8 +72,6 @@ async function fetchWithRetry(url, options, retries = 3) {
           // Add the badge to the product element
           productElement.appendChild(badge);
           console.log('Added Best Seller badge to product ID:', productId);
-        } else {
-          console.log(`Product ID ${productId} is not marked as a Best Seller.`);
         }
       } else {
         console.warn('Product element not found for product ID:', productId);

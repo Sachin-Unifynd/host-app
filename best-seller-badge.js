@@ -29,10 +29,17 @@
     });
 
     // Log the result once after processing
-    console.log(hasBestSeller ? 'Best seller badges have been added successfully.' : 'No Best Seller badges were added.');
+    if (hasBestSeller) {
+      alert('Best Seller badges have been added successfully.'); // Alert for successful addition
+      console.log('Best seller badges have been added successfully.');
+    } else {
+      alert('No Best Seller badges were added.'); // Alert if no badges were added
+      console.log('No Best Seller badges were added.');
+    }
 
   } catch (error) {
     // Handle any other errors that occur during the process
     console.error('An error occurred while adding best-seller badges:', error);
+    alert('An error occurred while adding best-seller badges. Please try again later.'); // Alert for errors
   }
 })();

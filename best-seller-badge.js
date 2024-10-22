@@ -1,4 +1,4 @@
-/ Main function to check for best-seller metafield and display badges
+// Main function to check for best-seller metafield and display badges
 (function () {
   try {
     // Select all product elements

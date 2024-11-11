@@ -1,8 +1,10 @@
-(function () {
+(async function () {
   try {
-    console.log("Product data from Prisma:", window.productData);
+    const response = await fetch("/api/products");
+    const products = await response.json();
+    console.log("Fetched product data:", products);
+
     const productElements = document.querySelectorAll(".card-wrapper");
-    const products = window.productData || [];
 
     productElements.forEach((productElement) => {
       const productId = productElement.getAttribute("data-product-id");
@@ -13,10 +15,9 @@
         badge.className = "best-seller-badge";
         badge.innerText = "Best Seller";
         productElement.appendChild(badge);
-        console.log("Added Best Seller badge to product:", productId);
       }
     });
   } catch (error) {
-    console.error("An error occurred while processing product data:", error);
+    console.error("An error occurred while fetching product data:", error);
   }
 })();

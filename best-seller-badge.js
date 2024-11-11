@@ -1,6 +1,6 @@
 (async function () {
   try {
-    const response = await fetch("/api/products");
+    const response = await fetch("/api/products.ts");
     const products = await response.json();
     console.log("Fetched product data:", products);
 

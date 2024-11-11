@@ -1,14 +1,10 @@
 (function () {
   try {
-    // Print all product data to check availability
-    console.log('Product data from Prisma:', window.bestSellerProducts);
-
-    // If needed, proceed with the rest of the script logic after verification
     const productElements = document.querySelectorAll('.card-wrapper');
-    const bestSellerProducts = window.bestSellerProducts || [];
+    const bestSellerProducts = window.bestSellerProducts || []; // Access the embedded data
 
     productElements.forEach((productElement) => {
-      const productId = productElement.getAttribute('data-product-id'); // Ensure this attribute exists in your HTML
+      const productId = productElement.getAttribute('data-product-id'); // Ensure this attribute is set in your HTML
       const isBestSeller = bestSellerProducts.some((product) => product.id === productId);
 
       if (isBestSeller) {
@@ -22,7 +18,8 @@
       }
     });
 
+    console.log(bestSellerProducts.length > 0 ? 'Best seller badges have been added.' : 'No Best Seller badges found.');
   } catch (error) {
-    console.error('An error occurred while accessing product data:', error);
+    console.error('An error occurred while adding best-seller badges:', error);
   }
 })();
